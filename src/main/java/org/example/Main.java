@@ -41,8 +41,8 @@ public class Main {
         } else if (action == 3) {
             BruteForce bruteForce = new BruteForce();
             String filePath = "/Users/feed/IdeaProjects/CaesarCipher/src/main/java/org/example/Hamlet[ENCRYPTED].txt";
-            String encryptedText = fileService.readFile(filePath);
-            bruteForce.bruteForce(encryptedText);
+            //String encryptedText = fileService.readFile(filePath);
+            bruteForce.bruteForce(filePath);
 
         }
     }
