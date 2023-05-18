@@ -1,7 +1,5 @@
 package org.example;
 
-import java.lang.reflect.Array;
-
 public class BruteForce {
 
     public void bruteForce(String filePath) {
@@ -9,14 +7,14 @@ public class BruteForce {
         FileService fileService = new FileService();
         String encryptedText = fileService.readFile(filePath);
         String alphabet = constance.EN_ALPHABET_UP + constance.EN_ALPHABET_LOW + constance.SYMBOLS;
-        for (int k = 0; k < 26; k++) {
+        for (int i = 1; i < alphabet.length(); i++) {
             String decryptedText = "";
-            int key = k;
-            for (int i = 0; i < encryptedText.length(); i++) {
-                int index = alphabet.indexOf(encryptedText.charAt(i));
+            int key = i;
+            for (int j = 0; j < encryptedText.length(); j++) {
+                int index = alphabet.indexOf(encryptedText.charAt(j));
 
                 if (index == -1) {
-                    decryptedText += encryptedText.charAt(i);
+                    decryptedText += encryptedText.charAt(j);
                     continue;
                 }
                 if ((index - key) >= 0) {
@@ -25,20 +23,17 @@ public class BruteForce {
                     decryptedText += alphabet.charAt((index - key) + alphabet.length());
                 }
             }
-
             if (keyFound(decryptedText)) {
                 System.out.println("Decrypted Text Using key " + key);
-                fileService.writeFile(filePath,decryptedText,"[B key-" + key + "]");
+                fileService.writeFile(filePath, decryptedText, "[B key-" + key + "]");
                 return;
             }
-
-            //System.out.println("Decrypted Text Using key" + key + ":");
         }
 
     }
 
     private Boolean keyFound(String decryptedText) {
-        int charIndex = decryptedText.indexOf(",");
+        int charIndex = decryptedText.indexOf(".");
         if (charIndex >= 0) {
             String nextChar = decryptedText.substring(charIndex + 1, charIndex + 2);
             if (nextChar.equals(" ")) {
@@ -46,8 +41,16 @@ public class BruteForce {
                 if (Character.isUpperCase(lastCheckedSymbol.charAt(0))) {
                     return true;
                 }
-            }
 
+            } else if (nextChar.equals("\n")) {
+                String searchSubstring = decryptedText.substring(charIndex + 1);
+                for (int i = 0; i < searchSubstring.length(); i++) {
+                    char searchingUpperCaseLetter = searchSubstring.charAt(i);
+                    if (Character.isLetter(searchingUpperCaseLetter) || Character.isUpperCase(searchingUpperCaseLetter)) {
+                        return true;
+                    }
+                }
+            }
         }
         return false;
     }

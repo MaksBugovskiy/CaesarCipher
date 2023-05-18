@@ -17,26 +17,28 @@ public class FileService {
         }
     }
 
-    public void writeFile(String filePath, String fileContent, String fileStatus){
+    public void writeFile(String filePath, String fileContent, String operation) {
         Path path = Paths.get(filePath);
-        String fileName = path.getFileName().toString();
-        String fileExtension = "";
-        int extensionIndex = fileName.lastIndexOf('.');
-        int bracketIndex = fileName.indexOf('[');
+        String originalFileName = path.getFileName().toString();
+        int extensionIndex = originalFileName.lastIndexOf('.');
+        String fileExtension = originalFileName.substring(extensionIndex);
+        String fileName = "";
+
+        int bracketIndex = originalFileName.indexOf('[');
         if (extensionIndex > 0) {
-            fileExtension = fileName.substring(extensionIndex);
             if (bracketIndex > 0) {
-                fileName = fileName.substring(0, bracketIndex);
-            }else {
-                fileName = fileName.substring(0, extensionIndex);
+                fileName = originalFileName.substring(0, bracketIndex);
+            } else {
+                fileName = originalFileName.substring(0, extensionIndex);
             }
         }
 
-        String newFileName = fileName + fileStatus + fileExtension;
+
+        String newFileName = fileName + operation + fileExtension;
         Path newFilePath = path.resolveSibling(newFileName);
-        try{
+        try {
             Files.writeString(newFilePath, fileContent);
-        }catch (IOException e){
+        } catch (IOException e) {
             System.out.println(e.getMessage());
         }
 
