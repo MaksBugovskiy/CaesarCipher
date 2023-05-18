@@ -6,7 +6,6 @@ public class Runner {
         if (arguments.length > 0) {
             FileService fileService = new FileService();
             String filePath = String.valueOf(arguments[1]);
-            System.out.println(arguments[1]);
             if (arguments[0].toLowerCase().equals("encrypt")) {
                 Encryptor encryptor = new Encryptor();
                 String textForEncryption = fileService.readFile(filePath);
